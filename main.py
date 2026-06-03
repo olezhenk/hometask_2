@@ -45,7 +45,7 @@ class Recipe:
 
     @staticmethod
     def is_valid_ratio(ratio):
-        if ratio.isinstance(float):
+        if isinstance(ratio, (float, int)):
             if ratio <=0:
                 return False
             else:
@@ -54,9 +54,12 @@ class Recipe:
             return False
 
     def scale(self, ratio:float):
-        for ingr in self.ingredients:
-            ingr.quantity *= ratio
-        return self
+        if self.is_valid_ratio(ratio):
+             for ingr in self.ingredients:
+                ingr.quantity *= ratio
+             return self
+        else:
+            raise ValueError("Коэффициент должен быть положительным числом")
 
     def __len__(self):
         return len(self.ingredients)
