@@ -1,6 +1,6 @@
 #pytest test_recipes.py
 import pytest
-from main import Ingredient, Recipe
+from main import Ingredient, Recipe, ShoppingList
 
 class TestIngredient:
     def test_init(self):
@@ -56,3 +56,69 @@ class TestRecipe:
         recipe = Recipe("Блинчики", [ingr1, ingr2])
         assert len(recipe) == 2
     
+class TestShoppingList:
+    def test_add_recipe(self):
+        ingr1 = Ingredient("Мука", 500, "г")
+        ingr2 = Ingredient("Яйца", 3, "шт")
+        recipe = Recipe("Блинчики", [ingr1, ingr2])
+        shopping_list = ShoppingList()
+        shopping_list.add_recipe(recipe, 2)
+        assert shopping_list._items == [(Ingredient("Мука", 1000, "г"), "Блинчики"), (Ingredient("Яйца", 6, "шт"), "Блинчики")]
+        with pytest.raises(ValueError):
+            shopping_list.add_recipe(recipe, 0)
+
+
+    def test_remove_recipe(self):
+        ingr1 = Ingredient("Мука", 500, "г")
+        ingr2 = Ingredient("Яйца", 3, "шт")
+        recipe1 = Recipe("Блинчики", [ingr1, ingr2])
+        recipe2 = Recipe("Омлет", [ingr2])
+        shopping_list = ShoppingList()
+        shopping_list.add_recipe(recipe1, 2)
+        shopping_list.add_recipe(recipe2, 1)
+        assert shopping_list._items == [(Ingredient("Мука", 1000, "г"), "Блинчики"), (Ingredient("Яйца", 6, "шт"), "Блинчики"), (Ingredient("Яйца", 3, "шт"), "Омлет")]
+        shopping_list.remove_recipe(recipe1)
+        assert shopping_list._items == []
+
+    def test_get_list(self):
+        ingr1 = Ingredient("Мука", 500, "г")
+        ingr2 = Ingredient("Яйца", 3, "шт")
+        recipe = Recipe("Блинчики", [ingr1, ingr2])
+        shopping_list = ShoppingList()
+        shopping_list.add_recipe(recipe, 2)
+        assert shopping_list.get_list() == [(Ingredient("Мука", 1000, "г"), "Блинчики"), (Ingredient("Яйца", 6, "шт"), "Блинчики")]
+
+    def test_add(self):
+        ingr1 = Ingredient("Мука", 500, "г")
+        ingr2 = Ingredient("Яйца", 3, "шт")
+        recipe1 = Recipe("Блинчики", [ingr1, ingr2])
+        shopping_list1 = ShoppingList()
+        shopping_list1.add_recipe(recipe1, 2)
+    
+        ingr3 = Ingredient("Молоко", 200, "мл")
+        ingr4 = Ingredient("Яйца", 2, "шт")
+        recipe2 = Recipe("Омлет", [ingr3, ingr4])
+        shopping_list2 = ShoppingList()
+        shopping_list2.add_recipe(recipe2, 1)
+    
+        shopping_list3 = shopping_list1.__add__(shopping_list2)
+    
+        assert len(shopping_list3._items) == 4
+        assert shopping_list3._items[0][0].name == "Мука"
+        assert shopping_list3._items[0][0].quantity == 1000
+        assert shopping_list3._items[0][1] == "Блинчики"
+    
+        assert shopping_list3._items[1][0].name == "Яйца"
+        assert shopping_list3._items[1][0].quantity == 6
+        assert shopping_list3._items[1][1] == "Блинчики"
+    
+        assert shopping_list3._items[2][0].name == "Молоко"
+        assert shopping_list3._items[2][0].quantity == 200
+        assert shopping_list3._items[2][1] == "Омлет"
+    
+        assert shopping_list3._items[3][0].name == "Яйца"
+        assert shopping_list3._items[3][0].quantity == 2
+        assert shopping_list3._items[3][1] == "Омлет"
+    
+        assert len(shopping_list1._items) == 2
+        assert len(shopping_list2._items) == 2
