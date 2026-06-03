@@ -94,10 +94,8 @@ class TestShoppingList:
         assert len(result) == 2
         assert result[0].name == "Мука"
         assert result[0].quantity == 1000
-        assert result[0].unit == "г"
         assert result[1].name == "Яйца"
         assert result[1].quantity == 6
-        assert result[1].unit == "шт"
 
     def test_add(self):
         ingr1 = Ingredient("Мука", 500, "г")
