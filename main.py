@@ -21,11 +21,14 @@ class Ingredient:
   def __repr__(self):
     return f"Ingredient('{self.name}', {self.quantity}, '{self.unit}')"
 
-  def __eq__(ingr1, ingr2):
-    if ingr1.name == ingr2.name and ingr1.unit == ingr2.unit:
-      return Ingredient(ingr1.name, ingr1.quantity + ingr2.quantity, ingr1.unit)
+  def __eq__(self, other):
+    if isinstance(other, Ingredient):
+      if self.name == other.name and self.unit == other.unit:
+        return True
+      else:
+        return False
     else:
-      return ingr1
+       raise TypeError("Сравнение возможно только между объектами класса Ingredient")
 
 
 class Recipe:
