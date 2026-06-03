@@ -80,7 +80,7 @@ class TestShoppingList:
         shopping_list.add_recipe(recipe2, 1)
         assert shopping_list._items == [(Ingredient("Мука", 1000, "г"), "Блинчики"), (Ingredient("Яйца", 6, "шт"), "Блинчики"), (Ingredient("Яйца", 3, "шт"), "Омлет")]
         shopping_list.remove_recipe(recipe1)
-        assert shopping_list._items == []
+        assert shopping_list._items == [(Ingredient("Яйца", 3, "шт"), "Омлет")]
 
     def test_get_list(self):
         ingr1 = Ingredient("Мука", 500, "г")
