@@ -22,7 +22,12 @@
 - get_list() – вернуть объединённый и отсортированный список ингредиентов
 - __add__(other) – объединить два списка 
 
-Для запуска тестов:
+Для запуска тестов в среде разработки:
 pip install pytest    (если не установлен pytest)      
 pytest test_recipes.py (команда также продублирована в файле с тестами в 1 строке)
 
+Установка:
+git clone https://github.com/olezhenk/hometask_2
+cd <папка>
+pip install -r requirements.txt
+pytest
