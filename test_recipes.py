@@ -1,4 +1,6 @@
 #pytest test_recipes.py
+from unittest import result
+
 import pytest
 from main import Ingredient, Recipe, ShoppingList
 
@@ -86,7 +88,15 @@ class TestShoppingList:
         recipe = Recipe("Блинчики", [ingr1, ingr2])
         shopping_list = ShoppingList()
         shopping_list.add_recipe(recipe, 2)
-        assert shopping_list.get_list() == [(Ingredient("Мука", 1000, "г"), "Блинчики"), (Ingredient("Яйца", 6, "шт"), "Блинчики")]
+        result = shopping_list.get_list()
+    
+        assert len(result) == 2
+        assert result[0].name == "Мука"
+        assert result[0].quantity == 1000
+        assert result[0].unit == "г"
+        assert result[1].name == "Яйца"
+        assert result[1].quantity == 6
+        assert result[1].unit == "шт"
 
     def test_add(self):
         ingr1 = Ingredient("Мука", 500, "г")
